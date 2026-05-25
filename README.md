@@ -1,36 +1,23 @@
-# World Cup 2022: Who Beat Their Expected Goals?
+## Part 2: Predicting Who Advances (Machine Learning)
 
-A data analysis project exploring which World Cup 2022 teams overperformed or 
-underperformed their expected goals (xG) — finding the stories the standings don't tell.
+Building on the analysis, I trained a model to predict whether a team would 
+advance from the group stage (top 2 finish) based only on their performance stats.
 
-## The Question
-Expected goals (xG) measures the quality of chances a team creates. By comparing 
-a team's *actual* goals to their *expected* goals, we can see who finished clinically 
-and who wasted strong chances — insight a casual glance at the results table misses.
+**Approach:**
+- **Target:** whether a team advanced (yes/no), derived from group rank.
+- **Features:** goals scored, goals against, expected goals (for & against), 
+  wins, draws, losses.
+- **Avoiding data leakage:** I deliberately excluded `rank`, `points`, and 
+  `goal difference`, since those directly determine advancement and would let 
+  the model "cheat" rather than learn from performance.
+- **Model:** a Decision Tree classifier, chosen for interpretability.
+- **Validation:** an 80/20 train/test split, so the model is evaluated on 
+  teams it never saw during training.
 
-## The Data
-World Cup 2022 group-stage team stats (32 teams), sourced from Kaggle, including 
-goals scored and expected goals per team.
+**Result & honest interpretation:**
+The model reached ~57% accuracy on the test set. A larger dataset spanning multiple 
+tournaments would likely improve its performance.
 
-## The Method
-Using Python and pandas, I calculated an `overperformance` metric 
-(goals scored − expected goals) for each team, then visualized the results 
-with matplotlib as a color-coded horizontal bar chart.
-
-## The Finding
-- **Clinical finishers:** England and Spain led the field, each scoring 3.8 goals 
-  above expectation.
-- **The hidden story — Germany:** Germany created the *most* chances of any team 
-  (10.1 xG) but scored only 6, underperforming by 4.1 — the worst in the tournament. 
-  They generated enough quality to advance, but their finishing let them down, and 
-  they exited in the group stage.
-- **xG isn't everything:** Argentina underperformed their xG (−1.0) and still won 
-  the tournament — a reminder that finishing quality is one piece of a bigger picture.
-
-## How to Run
-1. Install requirements: `pip install pandas matplotlib`
-2. Run: `python football_stats.py`
-3. The script prints the ranked table and displays the bar chart.
-
-## Tools
-Python, pandas, matplotlib
+I tried to demonstrate full ML workflow — feature engineering, leakage 
+prevention, train/test validation, and honest evaluation — rather than 
+overclaiming predictive power.
